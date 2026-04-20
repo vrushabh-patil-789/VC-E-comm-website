@@ -14,8 +14,8 @@ export default function Home({ onAddToCart }) {
       {/* Hero */}
       <section className="hero" id="hero">
         <div className="hero-content animate-in">
-          <h1>Elevate Your <span>Everyday Style</span></h1>
-          <p>Discover curated collections of premium shirts, t-shirts, and jeans designed for the modern wardrobe.</p>
+          <h1>Look Better <span>Feel Better, Every Day</span></h1>
+          <p>Shop Vare Collection’s latest arrival of premium essentials designed for the man who values effortless style.</p>
           <div className="hero-actions">
             <Link to="/shirts" className="btn btn-primary">Shop Now →</Link>
             <Link to="/tshirts" className="btn btn-outline">Explore Collection</Link>
@@ -49,9 +49,9 @@ export default function Home({ onAddToCart }) {
               <div className="product-card-img" style={{ aspectRatio: '16/9' }}>
                 <div className="product-placeholder">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                    <path d="m21 15-5-5L5 21"/>
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <path d="m21 15-5-5L5 21" />
                   </svg>
                   <span>{cat.name}</span>
                 </div>
@@ -92,8 +92,8 @@ export default function Home({ onAddToCart }) {
             <div className="feature" key={i}>
               <div className="feature-icon">
                 <svg viewBox="0 0 24 24">
-                  <path d={f.icon}/>
-                  {f.circle && <circle cx={f.circle.cx} cy={f.circle.cy} r={f.circle.r}/>}
+                  <path d={f.icon} />
+                  {f.circle && <circle cx={f.circle.cx} cy={f.circle.cy} r={f.circle.r} />}
                 </svg>
               </div>
               <h3>{f.title}</h3>
