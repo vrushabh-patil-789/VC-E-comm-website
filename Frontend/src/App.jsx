@@ -60,7 +60,9 @@ export default function App() {
         onRemove={removeItem}
       />
 
-      <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
+      <div className={`fixed bottom-8 right-8 bg-accent text-white px-6 py-4 rounded-md text-sm font-medium shadow-xl transition-all duration-300 z-[300] ${toast ? 'translate-y-0 opacity-100' : 'translate-y-[120%] opacity-0'}`}>
+        {toast}
+      </div>
     </>
   )
 }
