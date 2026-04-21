@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react'
+
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CartSidebar from './components/CartSidebar'
 import Home from './pages/Home'
 import CategoryPage from './pages/CategoryPage'
+
 
 export default function App() {
   const [cart, setCart] = useState([])
