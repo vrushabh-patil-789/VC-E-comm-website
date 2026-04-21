@@ -28,7 +28,7 @@ export default function Home({ onAddToCart }) {
             <img
               src="/Shirts/shirt-hero.jpg"
               alt="Shirts Collection"
-              className="w-full h-full object-cover scale-105 blur-[1px] group-hover:blur-0 group-hover:scale-110 transition-all duration-1000"
+              className="w-full h-full object-cover scale-105 blur-[1px] group-hover:blur-0 group-hover:scale-110 transition-all duration-500"
             />
             <div className="absolute inset-0 bg-black/40 group-hover:bg-white/10 transition-colors duration-300 flex items-end p-5">
               <div>
@@ -42,7 +42,7 @@ export default function Home({ onAddToCart }) {
             <img
               src="/Jeans/jeans-hero.jpg"
               alt="Jeans Collection"
-              className="w-full h-full object-cover scale-105 blur-[1px] group-hover:blur-0 group-hover:scale-110 transition-all duration-1000"
+              className="w-full h-full object-cover scale-105 blur-[1px] group-hover:blur-0 group-hover:scale-110 transition-all duration-500"
             />
             <div className="absolute inset-0 bg-black/40 group-hover:bg-white/10 transition-colors duration-300 flex items-end p-5">
               <div>
