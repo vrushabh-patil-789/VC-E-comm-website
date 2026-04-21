@@ -127,17 +127,7 @@ export default function Home({ onAddToCart }) {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="max-w-[1280px] mx-auto px-4 md:px-8 xl:px-12 pb-12 md:pb-20">
-        <div className="bg-accent text-white rounded-xl p-[clamp(2.5rem,5vw,4rem)] text-center my-12" id="newsletter">
-          <h2 className="font-serif text-[1.75rem] font-semibold mb-2">Stay in Style</h2>
-          <p className="opacity-80 mb-6 text-[0.95rem]">Subscribe for exclusive offers, new arrivals, and style tips.</p>
-          <form className="flex flex-col sm:flex-row gap-3 max-w-[440px] mx-auto" onSubmit={e => e.preventDefault()}>
-            <input type="email" placeholder="Enter your email" id="newsletter-email" className="flex-1 px-5 py-3.5 rounded-full border-none text-[0.9rem] bg-white/15 text-white outline-none placeholder:text-white/60" />
-            <button type="submit" className="px-7 py-3.5 rounded-full bg-white text-accent font-semibold text-[0.85rem] transition-transform duration-[250ms] hover:scale-105">Subscribe</button>
-          </form>
-        </div>
-      </section>
+
     </main>
   )
 }
