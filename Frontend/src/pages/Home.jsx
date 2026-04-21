@@ -24,12 +24,34 @@ export default function Home({ onAddToCart }) {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 relative animate-[fadeInUp_0.5s_ease_forwards] max-w-[400px] md:max-w-none mx-auto w-full" style={{ animationDelay: '0.2s' }}>
-          <div className="bg-[#f0f0f0] rounded-xl aspect-[3/4] overflow-hidden transition-transform duration-[250ms] hover:-translate-y-1.5">
-            <div className="w-full h-full flex items-center justify-center text-[0.85rem] text-text-muted bg-gradient-to-br from-gray-100 to-gray-200">Shirts Collection</div>
-          </div>
-          <div className="bg-[#f0f0f0] rounded-xl aspect-[3/4] overflow-hidden transition-transform duration-[250ms] hover:-translate-y-1.5 mt-8">
-            <div className="w-full h-full flex items-center justify-center text-[0.85rem] text-text-muted bg-gradient-to-br from-gray-100 to-gray-200">Jeans Collection</div>
-          </div>
+          <Link to="/shirts" className="rounded-xl aspect-[3/4] overflow-hidden transition-transform duration-[250ms] hover:-translate-y-1.5 block relative group cursor-pointer">
+            <img
+              src="/Shirts/shirt-hero.jpg"
+              alt="Shirts Collection"
+              className="w-full h-full object-cover scale-105 blur-[1px] group-hover:blur-0 group-hover:scale-110 transition-all duration-1000"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-white/10 transition-colors duration-300 flex items-end p-5">
+              <div>
+                <p className="text-white/70 text-[0.7rem] uppercase tracking-[2px] mb-1">Collection</p>
+                <h3 className="text-white font-serif text-[1.2rem] font-semibold leading-tight">Shirts</h3>
+                <span className="text-white/80 text-[0.75rem] mt-1 inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-300">Shop now →</span>
+              </div>
+            </div>
+          </Link>
+          <Link to="/jeans" className="rounded-xl aspect-[3/4] overflow-hidden transition-transform duration-[250ms] hover:-translate-y-1.5 mt-8 block relative group cursor-pointer">
+            <img
+              src="/Jeans/jeans-hero.jpg"
+              alt="Jeans Collection"
+              className="w-full h-full object-cover scale-105 blur-[1px] group-hover:blur-0 group-hover:scale-110 transition-all duration-1000"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-white/10 transition-colors duration-300 flex items-end p-5">
+              <div>
+                <p className="text-white/70 text-[0.7rem] uppercase tracking-[2px] mb-1">Collection</p>
+                <h3 className="text-white font-serif text-[1.2rem] font-semibold leading-tight">Jeans</h3>
+                <span className="text-white/80 text-[0.75rem] mt-1 inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-200">Shop now →</span>
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
 
