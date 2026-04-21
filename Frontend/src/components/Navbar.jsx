@@ -47,11 +47,8 @@ export default function Navbar({ cartCount, onCartOpen }) {
         </ul>
 
         <div className="flex gap-5 items-center">
-          <button className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-[250ms] hover:bg-gray-100 relative" id="search-icon" aria-label="Search">
-            <svg viewBox="0 0 24 24" className="w-5 h-5 stroke-text-main stroke-[1.8px] fill-none"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          </button>
           <button className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-[250ms] hover:bg-gray-100 relative" id="cart-icon" aria-label="Cart" onClick={onCartOpen}>
-            <svg viewBox="0 0 24 24" className="w-5 h-5 stroke-text-main stroke-[1.8px] fill-none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+            <svg viewBox="0 0 24 24" className="w-5 h-5 stroke-text-main stroke-[1.8px] fill-none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" /></svg>
             {cartCount > 0 && <span className="absolute top-[2px] right-[2px] w-[18px] h-[18px] rounded-full bg-accent text-white text-[10px] font-semibold flex items-center justify-center">{cartCount}</span>}
           </button>
         </div>
