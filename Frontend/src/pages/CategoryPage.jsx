@@ -34,10 +34,10 @@ export default function CategoryPage({ category, onAddToCart }) {
 
   return (
     <main>
-      <section className="category-hero" id={`${category}-hero`}>
-        <h1>{meta.title}</h1>
-        <p>{meta.subtitle}</p>
-        <div className="category-filters">
+      <section className="text-center py-10 md:py-16 px-4 md:px-8 xl:px-12 bg-gradient-to-br from-gray-50 to-gray-200 border-b border-border-main" id={`${category}-hero`}>
+        <h1 className="font-serif text-3xl md:text-5xl font-semibold mb-2">{meta.title}</h1>
+        <p className="text-text-muted text-[1.05rem] max-w-[520px] mx-auto">{meta.subtitle}</p>
+        <div className="flex gap-3 justify-center mt-6 flex-wrap">
           {[
             { key: 'featured', label: 'Featured' },
             { key: 'low', label: 'Price: Low to High' },
@@ -46,7 +46,7 @@ export default function CategoryPage({ category, onAddToCart }) {
           ].map(f => (
             <button
               key={f.key}
-              className={`filter-btn ${sortBy === f.key ? 'active' : ''}`}
+              className={`px-5 py-2 rounded-full text-sm font-medium border transition-all duration-[250ms] ${sortBy === f.key ? 'bg-accent text-white border-accent' : 'border-border-main text-text-muted hover:bg-accent hover:text-white hover:border-accent'}`}
               onClick={() => setSortBy(f.key)}
             >
               {f.label}
@@ -55,11 +55,11 @@ export default function CategoryPage({ category, onAddToCart }) {
         </div>
       </section>
 
-      <section className="section" id={`${category}-products`}>
-        <div className="section-header">
-          <p className="section-subtitle">{sorted.length} products</p>
+      <section className="max-w-[1280px] mx-auto px-4 md:px-8 xl:px-12 py-12 md:py-20" id={`${category}-products`}>
+        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+          <p className="text-text-muted text-[0.95rem] mt-1">{sorted.length} products</p>
         </div>
-        <div className="product-grid">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-6">
           {sorted.map(p => (
             <ProductCard key={p.id} product={p} onAddToCart={onAddToCart} />
           ))}

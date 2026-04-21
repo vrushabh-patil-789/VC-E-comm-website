@@ -1,10 +1,13 @@
 import { useState, useCallback } from 'react'
+
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CartSidebar from './components/CartSidebar'
 import Home from './pages/Home'
 import CategoryPage from './pages/CategoryPage'
+import ProductDetails from './pages/ProductDetails'
+
 
 export default function App() {
   const [cart, setCart] = useState([])
@@ -48,6 +51,7 @@ export default function App() {
         <Route path="/shirts" element={<CategoryPage category="shirts" onAddToCart={addToCart} />} />
         <Route path="/tshirts" element={<CategoryPage category="tshirts" onAddToCart={addToCart} />} />
         <Route path="/jeans" element={<CategoryPage category="jeans" onAddToCart={addToCart} />} />
+        <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} />} />
       </Routes>
 
       <Footer />
@@ -60,7 +64,9 @@ export default function App() {
         onRemove={removeItem}
       />
 
-      <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
+      <div className={`fixed bottom-8 right-8 bg-accent text-white px-6 py-4 rounded-md text-sm font-medium shadow-xl transition-all duration-300 z-[300] ${toast ? 'translate-y-0 opacity-100' : 'translate-y-[120%] opacity-0'}`}>
+        {toast}
+      </div>
     </>
   )
 }
