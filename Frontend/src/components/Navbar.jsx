@@ -24,7 +24,12 @@ export default function Navbar({ cartCount, onCartOpen }) {
   return (
     <nav className={`sticky top-0 z-[100] bg-white/85 backdrop-blur-[16px] border-b border-border-main px-4 md:px-8 xl:px-12 transition-shadow duration-[250ms] ${scrolled ? 'shadow-sm' : ''}`} id="main-nav">
       <div className="max-w-[1280px] mx-auto flex items-center justify-between h-[72px]">
-        <Link to="/" className="font-serif text-[1.6rem] font-bold tracking-[2px] text-accent">JEUNE</Link>
+        <Link to="/" className="font-serif text-[1.6rem] font-bold tracking-[2px] text-accent"><img
+          src="/Vare Collection Logo.png"
+          alt="Logo"
+          className="w-auto h-20 object-contain"
+        >
+        </img></Link>
 
         <button className="md:hidden flex flex-col gap-[5px] p-2" onClick={() => setMenuOpen(!menuOpen)} id="nav-toggle" aria-label="Toggle menu">
           <span className="w-[22px] h-[2px] bg-text-main rounded-sm transition-all duration-[250ms]" />

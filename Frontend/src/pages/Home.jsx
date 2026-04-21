@@ -17,7 +17,7 @@ export default function Home({ onAddToCart }) {
           <h1 className="font-serif text-[clamp(2.5rem,5vw,4rem)] font-bold leading-[1.15] mb-5">
             Look Better <span className="bg-gradient-to-br from-[#1a1a2e] to-[#4a5568] bg-clip-text text-transparent">Feel Better, Every Day</span>
           </h1>
-          <p className="text-text-muted text-[1.1rem] mb-8 max-w-[440px] mx-auto md:mx-0">Shop <span className='text-orange-500'>Vare Collection’s</span> latest arrival of premium essentials designed for the man who values effortless style.</p>
+          <p className="text-text-muted text-[1.1rem] mb-8 max-w-[440px] mx-auto md:mx-0">Shop <span className='text-orange-500'>Vare Collection's</span> latest arrival of premium essentials designed for the man who values effortless style.</p>
           <div className="flex gap-4 flex-wrap justify-center md:justify-start">
             <Link to="/shirts" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[0.875rem] font-semibold tracking-[0.3px] transition-all duration-[250ms] bg-accent text-white shadow-[0_4px_14px_rgba(26,26,46,.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(26,26,46,.35)]">Shop Now →</Link>
             <Link to="/tshirts" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[0.875rem] font-semibold tracking-[0.3px] transition-all duration-[250ms] border-[1.5px] border-border-main text-text-main hover:border-accent hover:bg-accent hover:text-white">Explore Collection</Link>
@@ -65,20 +65,17 @@ export default function Home({ onAddToCart }) {
         </div>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
           {[
-            { name: 'Shirts', desc: 'Formal & casual shirts', to: '/shirts', count: products.filter(p => p.category === 'shirts').length },
-            { name: 'T-Shirts', desc: 'Everyday essentials', to: '/tshirts', count: products.filter(p => p.category === 'tshirts').length },
-            { name: 'Jeans', desc: 'Denim for every occasion', to: '/jeans', count: products.filter(p => p.category === 'jeans').length },
+            { name: 'Shirts', desc: 'Formal & casual shirts', to: '/shirts', image: '/Shirts/shirt-pattern-2.jpg', count: products.filter(p => p.category === 'shirts').length },
+            { name: 'T-Shirts', desc: 'Everyday essentials', to: '/tshirts', image: '/T-Shirts/tshirt-blue-addidas.jpg', count: products.filter(p => p.category === 'tshirts').length },
+            { name: 'Jeans', desc: 'Denim for every occasion', to: '/jeans', image: '/Jeans/jeans-black-casual.jpg', count: products.filter(p => p.category === 'jeans').length },
           ].map(cat => (
             <Link to={cat.to} key={cat.name} className="bg-bg-card rounded-xl overflow-hidden border border-border-main transition-all duration-[250ms] group hover:-translate-y-1 hover:shadow-xl hover:border-transparent block">
-              <div className="aspect-[16/9] overflow-hidden bg-gradient-to-br from-[#f8f8f8] to-[#ececec] relative">
-                <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-[#b0b0b0]">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="w-12 h-12 opacity-40">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="m21 15-5-5L5 21" />
-                  </svg>
-                  <span className="uppercase tracking-[1px] text-[0.75rem]">{cat.name}</span>
-                </div>
+              <div className="aspect-[3/4] overflow-hidden relative">
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
               <div className="text-center p-6">
                 <h3 className="text-[1.15rem] font-medium whitespace-normal">{cat.name}</h3>
