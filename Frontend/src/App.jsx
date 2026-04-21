@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import CartSidebar from './components/CartSidebar'
 import Home from './pages/Home'
 import CategoryPage from './pages/CategoryPage'
+import ProductDetails from './pages/ProductDetails'
 
 
 export default function App() {
@@ -50,6 +51,7 @@ export default function App() {
         <Route path="/shirts" element={<CategoryPage category="shirts" onAddToCart={addToCart} />} />
         <Route path="/tshirts" element={<CategoryPage category="tshirts" onAddToCart={addToCart} />} />
         <Route path="/jeans" element={<CategoryPage category="jeans" onAddToCart={addToCart} />} />
+        <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} />} />
       </Routes>
 
       <Footer />

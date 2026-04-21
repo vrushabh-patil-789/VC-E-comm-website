@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom'
+
 export default function ProductCard({ product, onAddToCart }) {
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
 
   return (
-    <div className="bg-bg-card rounded-xl overflow-hidden border border-border-main transition-all duration-[250ms] relative group hover:-translate-y-1 hover:shadow-xl hover:border-transparent" id={`product-${product.id}`}>
-      <div className="aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f8f8f8] to-[#ececec] relative">
+    <div className="bg-bg-card rounded-xl overflow-hidden border border-border-main transition-all duration-[250ms] relative group hover:-translate-y-1 hover:shadow-xl hover:border-transparent flex flex-col" id={`product-${product.id}`}>
+      <Link to={`/product/${product.id}`} className="block aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f8f8f8] to-[#ececec] relative">
         {product.image ? (
           <img src={product.image} alt={product.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         ) : (
@@ -17,12 +19,21 @@ export default function ProductCard({ product, onAddToCart }) {
           </div>
         )}
         {product.badge && <span className={`absolute top-3 left-3 px-3 py-1 rounded-full text-[0.7rem] font-semibold tracking-[0.5px] uppercase text-white ${product.badge.toLowerCase() === 'sale' ? 'bg-red-600' : product.badge.toLowerCase() === 'new' ? 'bg-emerald-600' : product.badge.toLowerCase() === 'trending' ? 'bg-violet-600' : 'bg-accent'}`}>{product.badge}</span>}
-        <button className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-[4px] flex items-center justify-center opacity-0 transition-opacity duration-[250ms] group-hover:opacity-100" aria-label="Add to wishlist">
-          <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] stroke-text-main stroke-2 fill-none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
+        <button 
+          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-[4px] flex items-center justify-center opacity-0 transition-opacity duration-[250ms] group-hover:opacity-100 text-text-main hover:text-accent" 
+          aria-label="Add to wishlist"
+          onClick={(e) => {
+            e.preventDefault() // prevent navigation if wishlist button clicked
+            // toggle wishlist action here
+          }}
+        >
+          <svg viewBox="0 0 24 24" className="w-[18px] h-[18px] stroke-currentColor stroke-2 fill-none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" /></svg>
         </button>
-      </div>
-      <div className="p-[1.15rem]">
-        <h3 className="text-[0.95rem] font-medium mb-[0.35rem] truncate">{product.name}</h3>
+      </Link>
+      <div className="p-[1.15rem] flex flex-col flex-grow">
+        <Link to={`/product/${product.id}`}>
+          <h3 className="text-[0.95rem] font-medium mb-[0.35rem] truncate hover:text-accent transition-colors">{product.name}</h3>
+        </Link>
         <div className="flex items-center gap-[0.35rem] mb-2">
           <div className="flex gap-[1px]">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -41,9 +52,11 @@ export default function ProductCard({ product, onAddToCart }) {
         <div className="flex gap-[0.35rem] mt-3 flex-wrap">
           {product.sizes.map(s => <span key={s} className="px-[0.55rem] py-[0.25rem] rounded block text-[0.7rem] font-medium border border-border-main text-text-muted">{s}</span>)}
         </div>
-        <button className="w-full p-[0.7rem] mt-3 rounded-sm bg-accent text-white text-[0.82rem] font-semibold cursor-pointer" onClick={() => onAddToCart(product)}>
-          Add to Cart
-        </button>
+        <div className="mt-auto pt-3">
+          <button className="w-full p-[0.7rem] rounded-sm bg-accent text-white text-[0.82rem] font-semibold cursor-pointer transition-colors hover:bg-accent-light" onClick={() => onAddToCart(product)}>
+            Add to Cart
+          </button>
+        </div>
       </div>
     </div>
   )
