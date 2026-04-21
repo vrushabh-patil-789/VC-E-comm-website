@@ -14,10 +14,9 @@ export default function Home({ onAddToCart }) {
       {/* Hero */}
       <section className="max-w-[1280px] mx-auto px-4 md:px-8 xl:px-12 py-[clamp(3rem,8vw,6rem)] grid grid-cols-1 md:grid-cols-2 gap-12 items-center min-h-[70vh] text-center md:text-left" id="hero">
         <div className="animate-[fadeInUp_0.5s_ease_forwards]">
-          <h1 className="font-serif text-[clamp(2.5rem,5vw,4rem)] font-bold leading-[1.15] mb-5">
-            Look Better <span className="bg-gradient-to-br from-[#1a1a2e] to-[#4a5568] bg-clip-text text-transparent">Feel Better, Every Day</span>
+          <h1 className="font-serif text-[clamp(2.5rem,5vw,4rem)] font-bold leading-[1.15] mb-5"><span>Vare Collection</span><br></br><span className="bg-gradient-to-br from-[#1a1a2e] to-[#4a5568] bg-clip-text text-transparent">Perfect Men's Wear</span>
           </h1>
-          <p className="text-text-muted text-[1.1rem] mb-8 max-w-[440px] mx-auto md:mx-0">Shop <span className='text-orange-500'>Vare Collection's</span> latest arrival of premium essentials designed for the man who values effortless style.</p>
+          <p className="text-text-muted text-[1.1rem] mb-8 max-w-[440px] mx-auto md:mx-0">Shop <span className='text-orange-500 cursor-pointer'>Vare Collection's</span> latest arrival of premium essentials designed for the man who values effortless style.</p>
           <div className="flex gap-4 flex-wrap justify-center md:justify-start">
             <Link to="/shirts" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[0.875rem] font-semibold tracking-[0.3px] transition-all duration-[250ms] bg-accent text-white shadow-[0_4px_14px_rgba(26,26,46,.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(26,26,46,.35)]">Shop Now →</Link>
             <Link to="/tshirts" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[0.875rem] font-semibold tracking-[0.3px] transition-all duration-[250ms] border-[1.5px] border-border-main text-text-main hover:border-accent hover:bg-accent hover:text-white">Explore Collection</Link>
