@@ -1,4 +1,4 @@
-export default function CartSidebar({ isOpen, onClose, cart, onUpdateQty, onRemove }) {
+export default function CartSidebar({ isOpen, onClose, cart, onUpdateQty, onRemove, onCheckout }) {
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0)
 
   return (
@@ -20,19 +20,19 @@ export default function CartSidebar({ isOpen, onClose, cart, onUpdateQty, onRemo
             </div>
           ) : (
             cart.map(item => (
-              <div className="flex gap-4 py-4 border-b border-border-main" key={item.id}>
+              <div className="flex gap-4 py-4 border-b border-border-main" key={`${item.id}-${item.selectedSize}`}>
                 <div className="w-20 h-[100px] rounded-md bg-gray-100 shrink-0 overflow-hidden flex items-center justify-center text-[#ccc] text-[0.65rem]">
                   {item.image ? <img src={item.image} alt={item.name} className="w-full h-full object-cover" /> : '📦'}
                 </div>
                 <div className="flex-1">
                   <h4 className="text-[0.9rem] font-medium mb-1">{item.name}</h4>
-                  <span className="text-[0.75rem] text-text-muted">Size: {item.sizes[0]}</span>
+                  <span className="text-[0.75rem] text-text-muted">Size: {item.selectedSize}</span>
                   <div className="font-semibold mt-2">₹{(item.price * item.qty).toLocaleString()}</div>
                   <div className="flex items-center gap-2 mt-2">
-                    <button className="w-7 h-7 rounded-full border border-border-main flex items-center justify-center text-[0.9rem] transition-all hover:bg-accent hover:text-white hover:border-accent" onClick={() => onUpdateQty(item.id, -1)}>−</button>
+                    <button className="w-7 h-7 rounded-full border border-border-main flex items-center justify-center text-[0.9rem] transition-all hover:bg-accent hover:text-white hover:border-accent" onClick={() => onUpdateQty(item.id, item.selectedSize, -1)}>−</button>
                     <span>{item.qty}</span>
-                    <button className="w-7 h-7 rounded-full border border-border-main flex items-center justify-center text-[0.9rem] transition-all hover:bg-accent hover:text-white hover:border-accent" onClick={() => onUpdateQty(item.id, 1)}>+</button>
-                    <button className="ml-auto text-[0.75rem] text-red-600 font-medium transition-opacity hover:opacity-70" onClick={() => onRemove(item.id)}>Remove</button>
+                    <button className="w-7 h-7 rounded-full border border-border-main flex items-center justify-center text-[0.9rem] transition-all hover:bg-accent hover:text-white hover:border-accent" onClick={() => onUpdateQty(item.id, item.selectedSize, 1)}>+</button>
+                    <button className="ml-auto text-[0.75rem] text-red-600 font-medium transition-opacity hover:opacity-70" onClick={() => onRemove(item.id, item.selectedSize)}>Remove</button>
                   </div>
                 </div>
               </div>
@@ -46,7 +46,12 @@ export default function CartSidebar({ isOpen, onClose, cart, onUpdateQty, onRemo
               <span>Total</span>
               <span>₹{total.toLocaleString()}</span>
             </div>
-            <button className="w-full p-4 rounded-full bg-accent text-white font-semibold text-[0.95rem] transition-all hover:-translate-y-[1px] shadow-sm hover:shadow-md" id="checkout-btn">Checkout</button>
+            <button 
+              onClick={onCheckout}
+              className="w-full p-4 rounded-full bg-accent text-white font-semibold text-[0.95rem] transition-all hover:-translate-y-[1px] shadow-sm hover:shadow-md" id="checkout-btn"
+            >
+              Checkout
+            </button>
           </div>
         )}
       </aside>

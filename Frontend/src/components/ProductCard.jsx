@@ -4,8 +4,8 @@ export default function ProductCard({ product, onAddToCart }) {
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
 
   return (
-    <div className="bg-bg-card rounded-xl overflow-hidden border border-border-main transition-all duration-[250ms] relative group hover:-translate-y-1 hover:shadow-xl hover:border-transparent flex flex-col" id={`product-${product.id}`}>
-      <Link to={`/product/${product.id}`} className="block aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f8f8f8] to-[#ececec] relative">
+    <div className="bg-bg-card rounded-xl overflow-hidden border border-border-main transition-all duration-[250ms] relative group hover:-translate-y-1 hover:shadow-xl hover:border-transparent flex flex-col" id={`product-${product._id}`}>
+      <Link to={`/product/${product._id}`} className="block aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#f8f8f8] to-[#ececec] relative">
         {product.image ? (
           <img src={product.image} alt={product.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
         ) : (
@@ -31,7 +31,7 @@ export default function ProductCard({ product, onAddToCart }) {
         </button>
       </Link>
       <div className="p-[1.15rem] flex flex-col flex-grow">
-        <Link to={`/product/${product.id}`}>
+        <Link to={`/product/${product._id}`}>
           <h3 className="text-[0.95rem] font-medium mb-[0.35rem] truncate hover:text-accent transition-colors">{product.name}</h3>
         </Link>
         <div className="flex items-center gap-[0.35rem] mb-2">

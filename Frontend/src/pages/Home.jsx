@@ -1,8 +1,25 @@
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import ProductCard from '../components/ProductCard'
-import { products } from '../data/products'
-
+import api from '../utils/api'
+import { Link } from 'react-router-dom'
 export default function Home({ onAddToCart }) {
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get('/products')
+        setProducts(response.data)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error fetching products:', error)
+        setLoading(false)
+      }
+    }
+    fetchProducts()
+  }, [])
+
   const featured = [
     ...products.filter(p => p.category === 'shirts').slice(0, 2),
     ...products.filter(p => p.category === 'tshirts').slice(0, 2),
@@ -18,8 +35,8 @@ export default function Home({ onAddToCart }) {
           </h1>
           <p className="text-text-muted text-[1.1rem] mb-8 max-w-[440px] mx-auto md:mx-0">Shop <span className='text-orange-500 cursor-pointer'>Vare Collection's</span> latest arrival of premium essentials designed for the man who values effortless style.</p>
           <div className="flex gap-4 flex-wrap justify-center md:justify-start">
-            <Link to="/shirts" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[0.875rem] font-semibold tracking-[0.3px] transition-all duration-[250ms] bg-accent text-white shadow-[0_4px_14px_rgba(26,26,46,.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(26,26,46,.35)]">Shop Now →</Link>
-            <Link to="/tshirts" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[0.875rem] font-semibold tracking-[0.3px] transition-all duration-[250ms] border-[1.5px] border-border-main text-text-main hover:border-accent hover:bg-accent hover:text-white">Explore Collection</Link>
+            <a href="/shirts" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[0.875rem] font-semibold tracking-[0.3px] transition-all duration-[250ms] bg-accent text-white shadow-[0_4px_14px_rgba(26,26,46,.25)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(26,26,46,.35)]">Shop Now →</a>
+            <a href="/tshirts" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[0.875rem] font-semibold tracking-[0.3px] transition-all duration-[250ms] border-[1.5px] border-border-main text-text-main hover:border-accent hover:bg-accent hover:text-white">Explore Collection</a>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 relative animate-[fadeInUp_0.5s_ease_forwards] max-w-[400px] md:max-w-none mx-auto w-full" style={{ animationDelay: '0.2s' }}>
@@ -37,7 +54,7 @@ export default function Home({ onAddToCart }) {
               </div>
             </div>
           </Link>
-          <Link to="/jeans" className="rounded-xl aspect-[3/4] overflow-hidden transition-transform duration-[250ms] hover:-translate-y-1.5 mt-8 block relative group cursor-pointer">
+          <a href="/jeans" className="rounded-xl aspect-[3/4] overflow-hidden transition-transform duration-[250ms] hover:-translate-y-1.5 mt-8 block relative group cursor-pointer">
             <img
               src="/Jeans/jeans-hero.jpg"
               alt="Jeans Collection"
@@ -50,7 +67,7 @@ export default function Home({ onAddToCart }) {
                 <span className="text-white/80 text-[0.75rem] mt-1 inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-200">Shop now →</span>
               </div>
             </div>
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -68,7 +85,7 @@ export default function Home({ onAddToCart }) {
             { name: 'T-Shirts', desc: 'Everyday essentials', to: '/tshirts', image: '/T-Shirts/tshirt-blue-addidas.jpg', count: products.filter(p => p.category === 'tshirts').length },
             { name: 'Jeans', desc: 'Denim for every occasion', to: '/jeans', image: '/Jeans/jeans-black-casual.jpg', count: products.filter(p => p.category === 'jeans').length },
           ].map(cat => (
-            <Link to={cat.to} key={cat.name} className="bg-bg-card rounded-xl overflow-hidden border border-border-main transition-all duration-[250ms] group hover:-translate-y-1 hover:shadow-xl hover:border-transparent block">
+            <a href={cat.to} key={cat.name} className="bg-bg-card rounded-xl overflow-hidden border border-border-main transition-all duration-[250ms] group hover:-translate-y-1 hover:shadow-xl hover:border-transparent block">
               <div className="aspect-[3/4] overflow-hidden relative">
                 <img
                   src={cat.image}
@@ -78,9 +95,9 @@ export default function Home({ onAddToCart }) {
               </div>
               <div className="text-center p-6">
                 <h3 className="text-[1.15rem] font-medium whitespace-normal">{cat.name}</h3>
-                <p className="text-text-muted text-[0.875rem] mt-1">{cat.desc} • {cat.count} items</p>
+                <p className="text-text-muted text-[0.875rem] mt-1">{cat.desc} • {products.filter(p => p.category === cat.name.toLowerCase()).length} items</p>
               </div>
-            </Link>
+            </a>
           ))}
         </div>
       </section>
@@ -94,9 +111,13 @@ export default function Home({ onAddToCart }) {
           </div>
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-6">
-          {featured.map(p => (
-            <ProductCard key={p.id} product={p} onAddToCart={onAddToCart} />
-          ))}
+          {loading ? (
+            <p>Loading products...</p>
+          ) : (
+            featured.map(p => (
+              <ProductCard key={p._id} product={p} onAddToCart={onAddToCart} />
+            ))
+          )}
         </div>
       </section>
 

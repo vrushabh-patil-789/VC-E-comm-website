@@ -1,18 +1,57 @@
-import { useState, useCallback } from 'react'
-
-import { Routes, Route } from 'react-router-dom'
+import { useState, useCallback, useEffect } from 'react'
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
+import { useAuth } from './context/AuthContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import CartSidebar from './components/CartSidebar'
 import Home from './pages/Home'
 import CategoryPage from './pages/CategoryPage'
 import ProductDetails from './pages/ProductDetails'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import AdminDashboard from './pages/AdminDashboard'
+import CheckoutModal from './components/CheckoutModal'
 
 
 export default function App() {
-  const [cart, setCart] = useState([])
+  const { user } = useAuth()
+  const [cart, setCart] = useState(() => {
+    // Initial load from localStorage for the current user if they are logged in
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      try {
+        const u = JSON.parse(storedUser)
+        const savedCart = localStorage.getItem(`cart_${u._id}`)
+        return savedCart ? JSON.parse(savedCart) : []
+      } catch (e) {
+        console.error("Error parsing stored user or cart", e)
+        return []
+      }
+    }
+    return []
+  })
   const [cartOpen, setCartOpen] = useState(false)
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false)
+  const [productToSelectSize, setProductToSelectSize] = useState(null)
   const [toast, setToast] = useState('')
+  const navigate = useNavigate()
+
+  // Load cart when user changes (e.g. login/logout)
+  useEffect(() => {
+    if (user?._id) {
+      const savedCart = localStorage.getItem(`cart_${user._id}`)
+      setCart(savedCart ? JSON.parse(savedCart) : [])
+    } else {
+      setCart([])
+    }
+  }, [user])
+
+  // Save cart when it changes
+  useEffect(() => {
+    if (user?._id) {
+      localStorage.setItem(`cart_${user._id}`, JSON.stringify(cart))
+    }
+  }, [cart, user])
 
   const showToast = (msg) => {
     setToast(msg)
@@ -20,27 +59,45 @@ export default function App() {
   }
 
   const addToCart = useCallback((product) => {
+    if (!user) {
+      navigate('/login')
+      return
+    }
+
+    if (!product.selectedSize && product.sizes && product.sizes.length > 0) {
+      setProductToSelectSize(product)
+      return
+    }
+
     setCart(prev => {
-      const exists = prev.find(i => i.id === product.id)
+      const exists = prev.find(i => i.id === product.id && i.selectedSize === product.selectedSize)
       if (exists) {
-        return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i)
+        return prev.map(i => (i.id === product.id && i.selectedSize === product.selectedSize) ? { ...i, qty: i.qty + 1 } : i)
       }
       return [...prev, { ...product, qty: 1 }]
     })
-    showToast(`${product.name} added to cart!`)
-  }, [])
+    setProductToSelectSize(null)
+    showToast(`${product.name} (${product.selectedSize}) added to cart!`)
+  }, [user, navigate])
 
-  const updateQty = useCallback((id, delta) => {
+  const updateQty = useCallback((id, selectedSize, delta) => {
     setCart(prev =>
-      prev.map(i => i.id === id ? { ...i, qty: Math.max(1, i.qty + delta) } : i)
+      prev.map(i => (i.id === id && i.selectedSize === selectedSize) ? { ...i, qty: Math.max(1, i.qty + delta) } : i)
     )
   }, [])
 
-  const removeItem = useCallback((id) => {
-    setCart(prev => prev.filter(i => i.id !== id))
+  const removeItem = useCallback((id, selectedSize) => {
+    setCart(prev => prev.filter(i => !(i.id === id && i.selectedSize === selectedSize)))
   }, [])
 
   const cartCount = cart.reduce((sum, i) => sum + i.qty, 0)
+
+  const handleCheckoutSubmit = (addressData) => {
+    console.log('Order Details:', { cart, address: addressData })
+    setShowCheckoutModal(false)
+    setCart([]) // Clear cart after successful "checkout"
+    showToast('Order placed successfully! Thank you for shopping.')
+  }
 
   return (
     <>
@@ -52,6 +109,12 @@ export default function App() {
         <Route path="/tshirts" element={<CategoryPage category="tshirts" onAddToCart={addToCart} />} />
         <Route path="/jeans" element={<CategoryPage category="jeans" onAddToCart={addToCart} />} />
         <Route path="/product/:id" element={<ProductDetails onAddToCart={addToCart} />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route 
+          path="/admin" 
+          element={user && user.isAdmin ? <AdminDashboard /> : <Navigate to="/login" />} 
+        />
       </Routes>
 
       <Footer />
@@ -62,11 +125,50 @@ export default function App() {
         cart={cart}
         onUpdateQty={updateQty}
         onRemove={removeItem}
+        onCheckout={() => {
+          setCartOpen(false)
+          setShowCheckoutModal(true)
+        }}
+      />
+
+      <CheckoutModal 
+        isOpen={showCheckoutModal} 
+        onClose={() => setShowCheckoutModal(false)}
+        onSubmit={handleCheckoutSubmit}
       />
 
       <div className={`fixed bottom-8 right-8 bg-accent text-white px-6 py-4 rounded-md text-sm font-medium shadow-xl transition-all duration-300 z-[300] ${toast ? 'translate-y-0 opacity-100' : 'translate-y-[120%] opacity-0'}`}>
         {toast}
       </div>
+
+      {/* Size Selection Modal */}
+      {productToSelectSize && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[400] flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-2xl animate-[fadeInUp_0.3s_ease_forwards]">
+            <h3 className="text-xl font-serif font-bold mb-2">Select Size</h3>
+            <p className="text-text-muted text-sm mb-6">Please choose a size for {productToSelectSize.name}</p>
+            
+            <div className="flex flex-wrap gap-3 mb-8">
+              {productToSelectSize.sizes.map(size => (
+                <button
+                  key={size}
+                  onClick={() => addToCart({ ...productToSelectSize, selectedSize: size })}
+                  className="w-12 h-12 rounded-lg border-2 border-border-main flex items-center justify-center font-bold hover:border-accent hover:text-accent transition-all active:scale-95"
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+            
+            <button 
+              onClick={() => setProductToSelectSize(null)}
+              className="w-full py-3 text-text-muted font-medium hover:text-text-main transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </>
   )
 }

@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 export default function Navbar({ cartCount, onCartOpen }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { user, logout } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -24,12 +32,9 @@ export default function Navbar({ cartCount, onCartOpen }) {
   return (
     <nav className={`sticky top-0 z-[100] bg-white/85 backdrop-blur-[16px] border-b border-border-main px-4 md:px-8 xl:px-12 transition-shadow duration-[250ms] ${scrolled ? 'shadow-sm' : ''}`} id="main-nav">
       <div className="max-w-[1280px] mx-auto flex items-center justify-between h-[72px]">
-        <Link to="/" className="font-serif text-[1.6rem] font-bold tracking-[2px] text-accent"><img
-          src="/Vare Collection Logo.png"
-          alt="Logo"
-          className="w-auto h-20 object-contain"
-        >
-        </img></Link>
+        <Link to="/" className="font-serif text-[1.6rem] font-bold tracking-[2px] text-accent">
+          <img src="/Vare Collection Logo.png" alt="Logo" className="w-auto h-20 object-contain" />
+        </Link>
 
         <button className="md:hidden flex flex-col gap-[5px] p-2" onClick={() => setMenuOpen(!menuOpen)} id="nav-toggle" aria-label="Toggle menu">
           <span className="w-[22px] h-[2px] bg-text-main rounded-sm transition-all duration-[250ms]" />
@@ -51,9 +56,36 @@ export default function Navbar({ cartCount, onCartOpen }) {
           })}
         </ul>
 
-        <div className="flex gap-5 items-center">
+        <div className="flex gap-4 items-center">
+          {user ? (
+            <div className="flex items-center gap-4">
+              <span className="hidden lg:block text-sm font-medium text-text-muted uppercase tracking-wider">
+                Hi, <span className="text-accent font-bold">{user.name.split(' ')[0]}</span>
+              </span>
+              {user.isAdmin && (
+                <Link to="/admin" className="text-[11px] font-bold uppercase tracking-widest text-accent hover:underline">
+                  Admin
+                </Link>
+              )}
+              <button onClick={handleLogout} className="text-[11px] font-bold uppercase tracking-widest px-4 py-2 border-2 border-accent text-accent hover:bg-accent hover:text-white transition-all rounded-full cursor-pointer">
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 lg:gap-4">
+              <Link to="/login" className="text-[11px] font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-all px-2 md:px-4 py-2 cursor-pointer">
+                Login
+              </Link>
+              <Link to="/signup" className="text-[11px] font-bold uppercase tracking-widest px-4 md:px-6 py-2 bg-accent text-white hover:bg-accent/90 transition-all rounded-full shadow-md shadow-accent/20 cursor-pointer">
+                Signup
+              </Link>
+            </div>
+          )}
+
           <button className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-[250ms] hover:bg-gray-100 relative" id="cart-icon" aria-label="Cart" onClick={onCartOpen}>
-            <svg viewBox="0 0 24 24" className="w-5 h-5 stroke-text-main stroke-[1.8px] fill-none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" /></svg>
+            <svg viewBox="0 0 24 24" className="w-5 h-5 stroke-text-main stroke-[1.8px] fill-none">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
+            </svg>
             {cartCount > 0 && <span className="absolute top-[2px] right-[2px] w-[18px] h-[18px] rounded-full bg-accent text-white text-[10px] font-semibold flex items-center justify-center">{cartCount}</span>}
           </button>
         </div>

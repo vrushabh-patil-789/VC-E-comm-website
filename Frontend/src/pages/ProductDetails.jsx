@@ -1,25 +1,40 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { products } from '../data/products'
+import api from '../utils/api'
 
 export default function ProductDetails({ onAddToCart }) {
   const { id } = useParams()
-  const product = products.find(p => p.id === parseInt(id))
-  
+  const [product, setProduct] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [selectedSize, setSelectedSize] = useState('')
 
   useEffect(() => {
-    if (product && product.sizes && product.sizes.length > 0) {
-      setSelectedSize(product.sizes[0])
+    const fetchProduct = async () => {
+      try {
+        const response = await api.get(`/products/${id}`)
+        setProduct(response.data)
+        if (response.data.sizes && response.data.sizes.length > 0) {
+          setSelectedSize(response.data.sizes[0])
+        }
+        setLoading(false)
+      } catch (error) {
+        console.error('Error fetching product:', error)
+        setLoading(false)
+      }
     }
-  }, [product])
+    fetchProduct()
+  }, [id])
+
+  if (loading) {
+    return <div className="min-h-[60vh] flex items-center justify-center">Loading...</div>
+  }
 
   if (!product) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
         <h2 className="text-2xl font-bold mb-4">Product Not Found</h2>
         <p className="text-text-muted mb-6">The product you are looking for does not exist or has been removed.</p>
-        <Link to="/" className="px-6 py-3 bg-accent text-white rounded-md font-medium">Return Home</Link>
+        <a href="/" className="px-6 py-3 bg-accent text-white rounded-md font-medium">Return Home</a>
       </div>
     )
   }

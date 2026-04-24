@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import ProductCard from '../components/ProductCard'
-import { products } from '../data/products'
+import api from '../utils/api'
 
 const categoryMeta = {
   shirts: {
@@ -18,19 +18,35 @@ const categoryMeta = {
 }
 
 export default function CategoryPage({ category, onAddToCart }) {
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
   const meta = categoryMeta[category]
-  const categoryProducts = useMemo(() => products.filter(p => p.category === category), [category])
+  
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await api.get('/products')
+        setProducts(response.data.filter(p => p.category === category))
+        setLoading(false)
+      } catch (error) {
+        console.error('Error fetching products:', error)
+        setLoading(false)
+      }
+    }
+    fetchProducts()
+  }, [category])
+
   const [sortBy, setSortBy] = useState('featured')
 
   const sorted = useMemo(() => {
-    const copy = [...categoryProducts]
+    const copy = [...products]
     switch (sortBy) {
       case 'low': return copy.sort((a, b) => a.price - b.price)
       case 'high': return copy.sort((a, b) => b.price - a.price)
       case 'rating': return copy.sort((a, b) => b.rating - a.rating)
       default: return copy
     }
-  }, [categoryProducts, sortBy])
+  }, [products, sortBy])
 
   return (
     <main>
@@ -60,9 +76,13 @@ export default function CategoryPage({ category, onAddToCart }) {
           <p className="text-text-muted text-[0.95rem] mt-1">{sorted.length} products</p>
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-6">
-          {sorted.map(p => (
-            <ProductCard key={p.id} product={p} onAddToCart={onAddToCart} />
-          ))}
+          {loading ? (
+            <p>Loading products...</p>
+          ) : (
+            sorted.map(p => (
+              <ProductCard key={p._id} product={p} onAddToCart={onAddToCart} />
+            ))
+          )}
         </div>
       </section>
     </main>
